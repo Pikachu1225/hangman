@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class ProcessGuessTest {
     
     @Test
-    void processGuessTest(){
+    public void processGuessTest(){
         String guess = "a";
         int misses = 2;
         String[] hangmanOld = {"h", "_", "t"};
@@ -22,7 +22,7 @@ public class ProcessGuessTest {
     }
 
     @Test
-    void processGuessTest2(){
+    public void processGuessTest2(){
         String[] hangmanOld = {"h", "_", "t"};
         String guess = "a";
         int misses = 2;

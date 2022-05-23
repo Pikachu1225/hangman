@@ -36,7 +36,7 @@ public class LoadFile {
                 }
             }
             reader.close();
-            int randomNumber = (int) (Math.random() * 8 + 1);
+            int randomNumber = (int) (Math.random() * 8);
             myWord = wordBank[randomNumber];
             return(myWord);
         } 

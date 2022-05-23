@@ -1,5 +1,8 @@
 package Hangman.Main;
 
+import java.util.Objects;
+import java.util.Scanner;
+
 /**
  *  THIS WILL RUN THE GAME LOGIC. KEEPING TRACK OF THE ANSWER, NUMBER OF GUESSES, GUESSES MADE,
  *  AND PROGRESS IN GUESSING THE WORD.
@@ -27,9 +30,34 @@ package Hangman.Main;
 public class RunGame {
     //THE SECRET WORD IS THE WORD THAT YOU SHOULD TRY AND GUESS
     public static boolean play(){
+        
         //initialize any variables you may need
+        
+        int missesRemaining = 5;
+
         String secretWord = LoadFile.getWord();
-        System.out.println("my secret word: " +secretWord);
+        System.out.println("my secret word: " + secretWord);
+        int len = secretWord.length();
+        
+        String[] lettersGuessed = new String[len + missesRemaining -1];
+        for (int i = 0; i < lettersGuessed.length; i ++){
+            lettersGuessed[i] = "";
+        }
+        String[] hangmanWord = new String[len];
+        for(int i = 0; i < len; i++){
+            hangmanWord[i] = "-";
+        }
+
+        while(missesRemaining > 0){
+            while(true){
+                String displayString = createDisplayString(lettersGuessed, missesRemaining, hangmanWord);
+                String guess = handleUserInputLetterGuess(lettersGuessed, displayString);
+                updateHangmanWord(guess, secretWord, hangmanWord);
+            }
+        }
+            
+
+        
         //begin the while loop to play the game.
 
 
@@ -60,7 +88,18 @@ public class RunGame {
     public static String createDisplayString(String[] lettersGuessed, int missesRemaining, String[] hangmanWord){
         //TODO take all contents of the game state and print it in a legible state
         //it should look similar to the example above.
-        return null;
+        String guesses = "";
+        for (int i = 0; i < lettersGuessed.length; i++) {
+            guesses += lettersGuessed[i] + " ";
+        }
+        String hangman = "";
+        for (int i = 0; i < hangmanWord.length; i++){
+            hangman += hangmanWord[i] + " ";
+        }
+
+        String displayString = ("Letters you've guessed: " + guesses + "\n" + "Misses remaining: " + missesRemaining + "\n" + hangman);
+    
+        return displayString;
     }
 
     /**
@@ -80,15 +119,27 @@ public class RunGame {
 
     public static String handleUserInputLetterGuess(String[] lettersGuessed, String displayString){
         //TODO prompt a user guess and verify it is a valid guess.
+        System.out.println(displayString);
         //Return the valid guess as a string.
         String guess = "";
-       //take input from user
-       guess = App.readInput.nextLine();
-       //validate input
-       //return letter
+        //take input from user
+        //validate input
+        boolean inval = true;
+        while(inval){
+            guess = App.readInput.nextLine();
+            for(int i = 0; i < lettersGuessed.length; i++){
+                if(lettersGuessed[i].equals(guess)){
+                    inval = true;
+                    break;
+                }
+                else if(!(lettersGuessed[i].equals(guess))){
+                    inval = false;
+                }
+            }
+        }
+        //return letter
         return guess;
     }
-
     /**
      * Returns: Type: String[]
      *      The new hangmanWord, which is a list of strings where each string is a single letter either corresponding
@@ -103,9 +154,16 @@ public class RunGame {
      * Returns ["c", "a", "_"]
      */
 
-    public static String[] updateHangmanWord(String guessedLetter, String secretWord, String[] hangmanWord){
+    public static String[] updateHangmanWord(String guess, String secretWord, String[] hangmanWord){
         //TODO take the original hangman word and update it to include the guessed letter
         //for each index of the letter
+        for(int i = 0; i < hangmanWord.length; i ++){
+            String chk = secretWord.substring(i, i+1);
+            if(chk.equals(guess)){
+                hangmanWord[i] = guess;
+            }
+        }
+        
         return hangmanWord;
     }
 

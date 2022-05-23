@@ -25,14 +25,25 @@ public class App {
         boolean winLose;
         boolean continuePlaying = true;
         
+        int win = 0;
+        int loss = 0;
+        
         while(continuePlaying){
             //this will run your game and return true or false.
-            winLose = RunGame.play(); 
-            //TODO: calc win / loss
-            //TODO: do you want to play again?
-            readInput.nextLine();
+            winLose = RunGame.play();
+            if(winLose == true){
+                win++;
+            }
+            else{
+                loss++;
+            }
+            System.out.println("Do you want to play again? (y/n): ");
+            String inp = readInput.nextLine();
+            if(inp.equals("n")){
+                System.out.println("wins: " + win + ", losses:" + loss);
+                continuePlaying = false;
+            }
         }
-        //TODO: Print Win / Loss
         readInput.close();
     }
 }
